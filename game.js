@@ -8,11 +8,16 @@
 //todo adapter la vitesse en fonction de la taille du canevas
 
 class Game{
+    static canvas = document.getElementById("canvas");
+    static ctx = Game.canvas.getContext("2d");
+    circle;
     constructor(){
         this.load();
+
     }
 
     load(){
+        this.circle = new Circle(Game.ctx,600,300,5,5, 50 );
     }
 
     start(){
@@ -20,6 +25,19 @@ class Game{
     }
 
     draw(secondsPassed) {
+        Game.ctx.save();
+        Game.ctx.fillStyle = "rgb(255,255,255)";
+        Game.ctx.fillRect(0,0,1200,600);
+        Game.ctx.restore();
+////////////////////////////////////////////////////////////////////
+        this.circle.draw();
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
         this.drawFPS(secondsPassed);
     }
 
@@ -55,9 +73,9 @@ class Game{
     drawFPS(secondsPassed) {
         let fps = Math.round(1 / secondsPassed);
         //Draw number to the screen
-        ctx.font = '25px Arial';
-        ctx.fillStyle = 'black';
-        ctx.fillText("FPS: " + fps, 10, 30);
+        Game.ctx.font = '25px Arial';
+        Game.ctx.fillStyle = 'black';
+        Game.ctx.fillText("FPS: " + fps, 10, 30);
     }
 
 }
