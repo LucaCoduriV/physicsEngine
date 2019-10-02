@@ -1,5 +1,5 @@
 class GameObjects{
-    constructor(context, x, y, mass = 0){
+    constructor(context, x, y, mass = 1){
         this.context = context;
         this.x = x;
         this.y = y;
@@ -8,7 +8,6 @@ class GameObjects{
             y: Math.random() - 0.5
         };
         this.mass = mass;
-        this.isColliding = false;
     }
     static addToWorld(object){
 
@@ -71,7 +70,7 @@ class GameObjects{
 }
 
 class Circle extends GameObjects{
-    constructor(context, x, y, radius, mass = 0, ){
+    constructor(context, x, y, radius, mass = 1){
         super(context, x, y, mass);
         this.radius = radius;
     }
@@ -89,12 +88,16 @@ class Circle extends GameObjects{
     update(){
         for(let i = 0;i< Game.objects.length;i++){
             if(GameObjects.intersectCircleCircle(this.x,this.y,this.radius,Game.objects[i].x,Game.objects[i].y,Game.objects[i].radius) && this !== Game.objects[i]){
-                this.velocityX *= -1;
-                this.velocityY *= -1;
-            }else{
-                this.x += this.velocityX;
-                this.y += this.velocityY;
+                GameObjects.resolveCollision(this,Game.objects[i])
             }
+            if(this.x - this.radius <= 0 || this.x + this.radius >= 1200){
+                this.velocity.x = -this.velocity.x;
+            }
+            if(this.y - this.radius <= 0 || this.y + this.radius >= 600){
+                this.velocity.y = -this.velocity.y;
+            }
+            this.x += this.velocity.x;
+            this.y += this.velocity.y;
         }
 
 

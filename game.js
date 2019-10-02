@@ -29,10 +29,23 @@ class Game{
             let yMax = 550;
             let xMin = 50;
             let yMin = 50;
+            let radius = 50;
 
             let randomPositionX = generateRandomInteger(xMin, xMax);
             let randomPositionY = generateRandomInteger(yMin, yMax);
-            Game.objects.push(new Circle(Game.ctx,randomPositionX,randomPositionY, 50 ));
+
+            if(i !== 0){
+                for(let j = 0; j < Game.objects.length;j++){
+                    if(GameObjects.getDistanceBetweenTwoPoints(randomPositionX,randomPositionY,Game.objects[j].x,Game.objects[j].y) - radius * 2 === 0 ){
+                        randomPositionX = generateRandomInteger(xMin, xMax);
+                        randomPositionY = generateRandomInteger(yMin, yMax);
+                        j = -1;
+                    }
+                }
+            }
+
+            Game.objects.push(new Circle(Game.ctx,randomPositionX,randomPositionY, radius ));
+
         }
     }
 
@@ -59,8 +72,6 @@ class Game{
 
 //Cette fonction met à jour les éléments
     update(timestamp) {
-        Game.objects[1].x = Mouse.position.X;
-        Game.objects[1].y = Mouse.position.Y;
         Game.objects.forEach(object=>object.update());
     }
 
