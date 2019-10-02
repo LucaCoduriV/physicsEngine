@@ -1,46 +1,26 @@
-//Les objets sont dessiner depuis leur centre
-
-class vector{
-    constructor(){
-
-    }
-    static intersectCircleCircle(x1,y1,r1,x2,y2,r2){
-        let dist = vector.getDistanceBetweenTwoPoints(x1,y1,x2,y1);
-        if(dist <= r1 + r2){
-
-        }
-    }
-
-
-    static getNormalizeVector(){
-
-    }
-
-    static intersectRectRect(){
-
-    }
-
-
-
-    static getDistanceBetweenTwoPoints(x1, y1, x2, y2) {
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-    }
-
-}
-
 class GameObjects{
     gameObjects
     constructor(context, x, y, velocityX, velocityY, mass = 0){
         this.context = context;
         this.x = x;
         this.y = y;
-        this.vx = velocityX;
-        this.vy = velocityY;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
         this.mass = mass;
         this.isColliding = false;
     }
     static addToWorld(object){
 
+    }
+    static getDistanceBetweenTwoPoints(x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+    static intersectCircleCircle(x1,y1,r1,x2,y2,r2){
+        let dist = GameObjects.getDistanceBetweenTwoPoints(x1,y1,x2,y2);
+        if(dist < r1 + r2){
+            return true;
+        }
+        return false;
     }
 }
 
@@ -61,6 +41,15 @@ class Circle extends GameObjects{
     }
 
     update(){
+        for(let i = 0;i< Game.objects.length;i++){
+            if(GameObjects.intersectCircleCircle(this.x,this.y,this.radius,Game.objects[i].x,Game.objects[i].y,Game.objects[i].radius) && this !== Game.objects[i]){
+                this.velocityX *= -1;
+                this.velocityY *= -1;
+            }else{
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+            }
+        }
 
 
     }

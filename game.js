@@ -6,18 +6,38 @@
 //https://www.briankoponen.com/html5-javascript-game-tutorial-space-invaders-part-5/
 //cette fonction dessine sur le canevas
 //todo adapter la vitesse en fonction de la taille du canevas
+function generateRandomInteger(min, max) {
+    return Math.floor(min + Math.random()*(max + 1 - min))
+}
+
 
 class Game{
+    static ennemyNumber = 10;
     static canvas = document.getElementById("canvas");
     static ctx = Game.canvas.getContext("2d");
-    circle;
+    static objects = [];
     constructor(){
         this.load();
 
     }
 
     load(){
-        this.circle = new Circle(Game.ctx,600,300,5,5, 50 );
+
+
+        for(let i = 0; i<Game.ennemyNumber; i++){
+            let xMax = 1150;
+            let yMax = 550;
+            let xMin = 50;
+            let yMin = 50;
+            let vRandX = generateRandomInteger(0.01, 0.05);
+            //vRandX *= Math.random() < 0.5 ? -1 : 1;
+            let vRandY = generateRandomInteger(0.01, 0.05);
+            //vRandY *= Math.random() < 0.5 ? -1 : 1;
+
+            let randomPositionX = generateRandomInteger(xMin, xMax);
+            let randomPositionY = generateRandomInteger(yMin, yMax);
+            Game.objects.push(new Circle(Game.ctx,randomPositionX,randomPositionY,0.01,0.01, 50 ));
+        }
     }
 
     start(){
@@ -30,7 +50,7 @@ class Game{
         Game.ctx.fillRect(0,0,1200,600);
         Game.ctx.restore();
 ////////////////////////////////////////////////////////////////////
-        this.circle.draw();
+        Game.objects.forEach(object=>object.draw());
 
 
 
@@ -43,7 +63,9 @@ class Game{
 
 //Cette fonction met à jour les éléments
     update(timestamp) {
-
+        Game.objects[1].x = Mouse.position.X;
+        Game.objects[1].y = Mouse.position.Y;
+        Game.objects.forEach(object=>object.update());
     }
 
 
