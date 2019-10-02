@@ -29,14 +29,10 @@ class Game{
             let yMax = 550;
             let xMin = 50;
             let yMin = 50;
-            let vRandX = generateRandomInteger(0.01, 0.05);
-            //vRandX *= Math.random() < 0.5 ? -1 : 1;
-            let vRandY = generateRandomInteger(0.01, 0.05);
-            //vRandY *= Math.random() < 0.5 ? -1 : 1;
 
             let randomPositionX = generateRandomInteger(xMin, xMax);
             let randomPositionY = generateRandomInteger(yMin, yMax);
-            Game.objects.push(new Circle(Game.ctx,randomPositionX,randomPositionY,0.01,0.01, 50 ));
+            Game.objects.push(new Circle(Game.ctx,randomPositionX,randomPositionY, 50 ));
         }
     }
 
