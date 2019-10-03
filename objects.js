@@ -110,15 +110,14 @@ class Circle extends GameObjects{
                 this.gravitySpeed = 0;
                 this.velocity.y = -this.velocity.y * this.bounce;
             }
+            //quand ça touche le sol
             if(this.y + this.radius >= 600){
                 this.y = 600 - this.radius;
-                this.velocity.y = -this.velocity.y;
+                this.velocity.y = -Math.abs(this.velocity.y);
+                this.y += this.velocity;
             }
             //déplace la boulle
-            if(this.y - this.radius> 0 && this.y + this.radius < 600){
-                this.y += this.velocity.y + this.gravitySpeed;
-            }
-
+            this.y += this.velocity.y + this.gravitySpeed;
             this.x += this.velocity.x;
 
         }
