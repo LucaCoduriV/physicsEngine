@@ -101,10 +101,12 @@ class Circle extends GameObjects{
                 this.color = "rgb(0,100,100)";
                 GameObjects.resolveCollision(this,Game.objects[i])
             }
+            //quand ça touche les cotés
             if(this.x - this.radius <= 0 || this.x + this.radius >= 1200){
                 this.color = "rgb(0,100,100)";
                 this.velocity.x = -this.velocity.x;
             }
+            //quadn ça touche le plafond
             if(this.y - this.radius <= 0){
                 this.color = "rgb(0,100,100)";
                 this.gravitySpeed = 0;
@@ -112,9 +114,9 @@ class Circle extends GameObjects{
             }
             //quand ça touche le sol
             if(this.y + this.radius >= 600){
-                this.y = 600 - this.radius;
-                this.velocity.y = -Math.abs(this.velocity.y);
-                this.y += this.velocity;
+                //this.y = 600 - this.radius;
+                //this.velocity.y = -Math.abs(this.velocity.y);
+                this.y = -this.velocity;
             }
             //déplace la boulle
             this.y += this.velocity.y + this.gravitySpeed;
