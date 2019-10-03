@@ -12,10 +12,11 @@ function generateRandomInteger(min, max) {
 
 
 class Game{
-    static ennemyNumber = 10;
+    static circleNumber = 5;
     static canvas = document.getElementById("canvas");
     static ctx = Game.canvas.getContext("2d");
     static objects = [];
+    static gravity = 0.05;
     constructor(){
         this.load();
 
@@ -24,12 +25,12 @@ class Game{
     load(){
 
 
-        for(let i = 0; i<Game.ennemyNumber; i++){
+        for(let i = 0; i<Game.circleNumber; i++){
             let xMax = 1150;
             let yMax = 550;
             let xMin = 50;
             let yMin = 50;
-            let radius = 50;
+            let radius = 10;
 
             let randomPositionX = generateRandomInteger(xMin, xMax);
             let randomPositionY = generateRandomInteger(yMin, yMax);

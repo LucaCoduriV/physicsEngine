@@ -8,6 +8,10 @@ class GameObjects{
             y: Math.random() - 0.5
         };
         this.mass = mass;
+        this.color = "rgb(0,0,0)"
+        this.bounce = 1;
+        this.friction = 0.00001;
+        this.gravitySpeed = 0;
     }
     static addToWorld(object){
 
@@ -29,26 +33,26 @@ class GameObjects{
         };
         return rotatedVelocities;
     }
-    static resolveCollision(particle, otherParticle){
-        const xVelocityDiff = particle.velocity.x - otherParticle.velocity.x;
-        const yVelocityDiff = particle.velocity.y - otherParticle.velocity.y;
+    static resolveCollision(object, otherObject){
+        const xVelocityDiff = object.velocity.x - otherObject.velocity.x;
+        const yVelocityDiff = object.velocity.y - otherObject.velocity.y;
 
-        const xDist = otherParticle.x - particle.x;
-        const yDist = otherParticle.y - particle.y;
+        const xDist = otherObject.x - object.x;
+        const yDist = otherObject.y - object.y;
 
         //prevent accidental overlap of particles
         if(xVelocityDiff * xDist + yVelocityDiff + yDist >= 0){
 
             // Grab angle between the two colliding particles
-            const angle = -Math.atan2(otherParticle.y - particle.y, otherParticle.x -particle.x);
+            const angle = -Math.atan2(otherObject.y - object.y, otherObject.x -object.x);
 
             //store mass in var for better readability in collision equation
-            const m1 = particle.mass;
-            const m2 = otherParticle.mass;
+            const m1 = object.mass;
+            const m2 = otherObject.mass;
 
             //velocity before equation
-            const u1 = GameObjects.rotate(particle.velocity, angle);
-            const u2 = GameObjects.rotate(otherParticle.velocity, angle);
+            const u1 = GameObjects.rotate(object.velocity, angle);
+            const u2 = GameObjects.rotate(otherObject.velocity, angle);
 
             //velocity after 1d collision equation
             const v1 = {x: u1.x * (m1 - m2) / (m1 + m2) + u2.x * 2 * m2 / (m1 + m2), y: u1.y};
@@ -59,11 +63,11 @@ class GameObjects{
             const vFinal2 = GameObjects.rotate(v2, -angle);
 
             // Swap particle velocities for realistic bounce effect
-            particle.velocity.x = vFinal1.x;
-            particle.velocity.y = vFinal1.y;
+            object.velocity.x = vFinal1.x;
+            object.velocity.y = vFinal1.y;
 
-            otherParticle.velocity.x = vFinal2.x;
-            otherParticle.velocity.y = vFinal2.y;
+            otherObject.velocity.x = vFinal2.x;
+            otherObject.velocity.y = vFinal2.y;
         }
 
     }
@@ -73,33 +77,53 @@ class Circle extends GameObjects{
     constructor(context, x, y, radius, mass = 1){
         super(context, x, y, mass);
         this.radius = radius;
+        this.color = "rgb(200,0,100)";
     }
 
     draw(){
         this.context.save();
+        this.context.fillStyle = this.color;
         this.context.strokeStyle = "rgb(0,0,0)";
         this.context.strokeWidth = 10;
         this.context.beginPath();
         this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         this.context.stroke();
+        this.context.fill();
         this.context.restore();
     }
 
     update(){
+        this.gravitySpeed += Game.gravity;
+
+
         for(let i = 0;i< Game.objects.length;i++){
             if(GameObjects.intersectCircleCircle(this.x,this.y,this.radius,Game.objects[i].x,Game.objects[i].y,Game.objects[i].radius) && this !== Game.objects[i]){
+                this.color = "rgb(0,100,100)";
                 GameObjects.resolveCollision(this,Game.objects[i])
             }
             if(this.x - this.radius <= 0 || this.x + this.radius >= 1200){
+                this.color = "rgb(0,100,100)";
                 this.velocity.x = -this.velocity.x;
             }
-            if(this.y - this.radius <= 0 || this.y + this.radius >= 600){
+            if(this.y - this.radius <= 0){
+                this.color = "rgb(0,100,100)";
+                this.gravitySpeed = 0;
+                this.velocity.y = -this.velocity.y * this.bounce;
+            }
+            if(this.y + this.radius >= 600){
+                this.y = 600 - this.radius;
                 this.velocity.y = -this.velocity.y;
             }
+            //déplace la boulle
+            if(this.y - this.radius> 0 && this.y + this.radius < 600){
+                this.y += this.velocity.y + this.gravitySpeed;
+            }
+
             this.x += this.velocity.x;
-            this.y += this.velocity.y;
+
         }
 
 
     }
+
 }
