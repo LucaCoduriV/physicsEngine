@@ -8,7 +8,7 @@ class GameObjects {
             y: (Math.random() * -15) + -5
         };
         this.mass = mass;
-        this.color = "rgb(0,0,0)"
+        this.color = "rgb(0,0,0)";
         this.bounce = 0.9;
         this.friction = 0.1;
         this.acceleration = 0;
