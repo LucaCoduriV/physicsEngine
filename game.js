@@ -13,8 +13,7 @@ function generateRandomInteger(min, max) {
 
 class Game{
     static circleNumber = 3;
-    static canvas = document.getElementById("canvas");
-    static ctx = Game.canvas.getContext("2d");
+
     static objects = [];
     static gravity = 0.5;
     constructor(){
