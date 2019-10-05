@@ -1,7 +1,7 @@
 class GameObjects {
-    constructor(context,vectors, mass = 1) {
+    constructor(context, vectorStartPosition, mass = 1) {
         this.context = context;
-        this.vectors = vectors;
+        this.vectorStartPosition = vectorStartPosition;
         this.velocity = {
             x: (Math.random() * -15) + -5,
             y: (Math.random() * -15) + -5
@@ -13,7 +13,8 @@ class GameObjects {
         this.acceleration = 0;
         this.data = null;
     }
-    respondTocollision(otherObject, response){
+
+    respondTocollision(otherObject, response) {
         //sans prendre en compte la masse on va juste pousser l'autre objet
         response.overlapV.scale(0.5);
         this.data.pos.sub(response.overlapV);
@@ -27,7 +28,7 @@ class CircleShape extends GameObjects {
         super(context, vectors, mass);
         this.radius = radius;
         this.color = "rgb(200,0,100)";
-        this.data = new SAT.Circle(vectors,this.radius);
+        this.data = new SAT.Circle(vectors, this.radius);
     }
 
     draw() {
@@ -36,9 +37,38 @@ class CircleShape extends GameObjects {
         this.context.strokeStyle = "rgb(255,255,255)";
         this.context.strokeWidth = 10;
         this.context.beginPath();
-        this.context.arc(this.vectors.x, this.vectors.y, this.radius, 0, 2 * Math.PI);
+        this.context.arc(this.data.pos.x, this.data.pos.y, this.radius, 0, 2 * Math.PI);
         this.context.stroke();
         this.context.fill();
+        this.context.restore();
+    }
+
+    update() {
+
+    }
+}
+
+class PolygonShape extends GameObjects {
+
+    constructor(context, vectorStartPosition, vectors, mass = 1) {
+        super(context, vectorStartPosition, mass);
+        this.color = "rgb(200,0,100)";
+        this.vectors = vectors;
+        this.data = new SAT.Polygon(vectorStartPosition,vectors);
+    }
+
+    draw() {
+        this.context.save();
+        this.context.strokeStyle = "rgb(255,255,255)";
+        this.context.beginPath();
+        this.context.moveTo(this.data.pos.x, this.data.pos.y);
+        for(let i = this.data.calcPoints.length-1;i>0;i--){
+            let nextPointX = this.data.pos.x + this.data.calcPoints[i].x;
+            let nextPointY = this.data.pos.y + this.data.calcPoints[i].y;
+            this.context.lineTo(nextPointX, nextPointY);
+        }
+        this.context.closePath();
+        this.context.stroke();
         this.context.restore();
     }
 

@@ -29,8 +29,8 @@ class World {
 
 //Cette fonction met à jour les éléments
     update(timestamp) {
-        this._objects[1].data.pos.x = Mouse.position.X;
-        this._objects[1].data.pos.y = Mouse.position.Y;
+        this._objects[0].data.pos.x = Mouse.position.X;
+        this._objects[0].data.pos.y = Mouse.position.Y;
         this.checkCollisionBetweenObjects();
         this._objects.forEach(object => object.update());
     }
@@ -85,6 +85,12 @@ class World {
                     //check si le deuxième objet est un cercle
                     if (this._objects[bObject] instanceof CircleShape) {
                         isColliding = SAT.testCircleCircle(this._objects[aObject].data, this._objects[bObject].data, response);
+                    }
+                }else if(this._objects[aObject] instanceof PolygonShape){
+                    if (this._objects[bObject] instanceof CircleShape) {
+                        isColliding = SAT.testPolygonCircle(this._objects[aObject].data, this._objects[bObject].data, response);
+                    }else{
+                        isColliding = SAT.testPolygonPolygon(this._objects[aObject].data, this._objects[bObject].data, response);
                     }
                 }
                 if (isColliding) {
