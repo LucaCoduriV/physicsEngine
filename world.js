@@ -1,28 +1,27 @@
-class World{
+class World {
     _objects = [];
-    constructor(ctx){
+
+    constructor(ctx) {
         this.context = ctx;
         this.load();
     }
-    start(){
+
+    start() {
         requestAnimationFrame((timestamp) => this.loop(timestamp));
     }
 
-    load(){
+    load() {
 
     }
 
     draw(secondsPassed) {
         this.context.save();
         this.context.fillStyle = "0";
-        this.context.fillRect(0,0,1200,600);
+        this.context.fillRect(0, 0, 1200, 600);
         this.context.restore();
 
 
-
         this._objects.forEach(object => object.draw());
-
-
 
 
         this.drawFPS(secondsPassed);
@@ -30,9 +29,9 @@ class World{
 
 //Cette fonction met à jour les éléments
     update(timestamp) {
+        this.checkCollisionBetweenObjects();
         this._objects.forEach(object => object.update());
     }
-
 
 
 //cette fonction représente la gameloop du jeu
@@ -48,8 +47,7 @@ class World{
 
         if (this.remainingRefreshes > 1) {
             this.remainingRefreshes--;
-        }
-        else {
+        } else {
             this.remainingRefreshes = 3600;
         }
 
@@ -67,8 +65,31 @@ class World{
         this.context.restore();
     }
 
-    addObject(object){
+    addObject(object) {
         this._objects.push(object);
+    }
+
+    checkCollisionBetweenObjects() {
+        let response = new SAT.Response();
+        let isColliding = false;
+
+        for (let aCount = 0; aCount < this._objects.length; aCount++) {
+            for (let bCount = aCount + 1; bCount < this._objects.length; bCount++) {
+                let aObject = aCount;
+                let bObject = bCount;
+                //Check si le premier objet est un cercle
+                if (this._objects[aObject] instanceof CircleShape) {
+                    //check si le deuxième objet est un cercle
+                    if (this._objects[bObject] instanceof CircleShape) {
+                        isColliding = SAT.testCircleCircle(this._objects[aObject].data, this._objects[bObject].data, response);
+                    }
+                }
+                if (isColliding) {
+                    //si une collision existe alors on répond en conséquence
+                    this._objects[aObject].respondTocollision(this._objects[bObject], response);
+                }
+            }
+        }
     }
 
 

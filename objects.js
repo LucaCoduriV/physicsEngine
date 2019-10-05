@@ -1,7 +1,7 @@
 class GameObjects {
-    constructor(context,vectorList, mass = 1) {
+    constructor(context,vectors, mass = 1) {
         this.context = context;
-        this.vectorList = vectorList;
+        this.vectorList = vectors;
         this.velocity = {
             x: (Math.random() * -15) + -5,
             y: (Math.random() * -15) + -5
@@ -12,15 +12,19 @@ class GameObjects {
         this.friction = 0.1;
         this.acceleration = 0;
     }
+    respondTocollision(otherObject, response){
+        //sans prendre en compte la masse on va juste pousser l'autre objet
+        otherObject.data.pos.add(response.overlapV);
+    }
 }
 
-class HdCircle extends GameObjects {
-    circleHitBox;
-    constructor(context, vectorList, radius, mass = 1) {
-        super(context, vectorList, mass);
+class CircleShape extends GameObjects {
+    data;
+    constructor(context, vectors, radius, mass = 1) {
+        super(context, vectors, mass);
         this.radius = radius;
         this.color = "rgb(200,0,100)";
-        this.circleHitBox = new SAT.Circle(vectorList[0],this.radius);
+        this.data = new SAT.Circle(vectors,this.radius);
     }
 
     draw() {

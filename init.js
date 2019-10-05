@@ -7,9 +7,11 @@ window.onload = function () {
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
     world  = new World(ctx);
-    world.start();
 
-    world.addObject(new HdCircle(ctx,new SAT.Vector(600,300),50));
+    world.addObject(new CircleShape(ctx,new SAT.Vector(600,300),50));
+    world.addObject(new CircleShape(ctx,new SAT.Vector(650,300),50));
+
+    world.start();
 
 
 
