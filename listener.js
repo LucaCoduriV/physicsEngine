@@ -55,7 +55,7 @@ function handleMouseUp(event) {
 
 
 function handleMouseMove(event) {
-    var rect = Game.canvas.getBoundingClientRect();
+    let rect = canvas.getBoundingClientRect();
     Mouse.position.X = event.clientX - rect.left;
     Mouse.position.Y = event.clientY - rect.top;
 }

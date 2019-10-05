@@ -29,6 +29,8 @@ class World {
 
 //Cette fonction met à jour les éléments
     update(timestamp) {
+        this._objects[1].data.pos.x = Mouse.position.X;
+        this._objects[1].data.pos.y = Mouse.position.Y;
         this.checkCollisionBetweenObjects();
         this._objects.forEach(object => object.update());
     }
@@ -73,6 +75,7 @@ class World {
         let response = new SAT.Response();
         let isColliding = false;
 
+        //on parcourt la liste des objets pour comparer chaque objet avec les autres;
         for (let aCount = 0; aCount < this._objects.length; aCount++) {
             for (let bCount = aCount + 1; bCount < this._objects.length; bCount++) {
                 let aObject = aCount;

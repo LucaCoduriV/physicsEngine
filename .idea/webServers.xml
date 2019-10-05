@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="13e32a5d-a86b-4c7a-aeb2-815a87ddb908" name="RaspBerry" url="http://80.219.216.167">
+        <fileTransfer host="80.219.216.167" port="21" rootFolder="/var/www/html/physicsEngine/">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
