@@ -29,8 +29,8 @@ class World {
 
 //Cette fonction met à jour les éléments
     update(timestamp) {
-        this._objects[0].data.pos.x = Mouse.position.X;
-        this._objects[0].data.pos.y = Mouse.position.Y;
+        this._objects[1].data.pos.x = Mouse.position.X;
+        this._objects[1].data.pos.y = Mouse.position.Y;
         this.checkCollisionBetweenObjects();
         this._objects.forEach(object => object.update());
     }
