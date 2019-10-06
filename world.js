@@ -1,5 +1,32 @@
 class World {
+    get gravity() {
+        return this._gravity;
+    }
+
+    set gravity(value) {
+        this._gravity = value;
+    }
+
+    get worldHeight() {
+        return this._worldHeight;
+    }
+
+    set worldHeight(value) {
+        this._worldHeight = value;
+    }
+
+    get worldWidth() {
+        return this._worldWidth;
+    }
+
+    set worldWidth(value) {
+        this._worldWidth = value;
+    }
+
     _objects = [];
+    _gravity = 0.5;
+    _worldHeight = 600;
+    _worldWidth = 1200;
 
     constructor(ctx) {
         this.context = ctx;
@@ -17,7 +44,7 @@ class World {
     draw(secondsPassed) {
         this.context.save();
         this.context.fillStyle = "0";
-        this.context.fillRect(0, 0, 1200, 600);
+        this.context.fillRect(0, 0, this._worldWidth, this._worldHeight);
         this.context.restore();
 
 
@@ -31,8 +58,10 @@ class World {
     update(timestamp) {
         this._objects[1].data.pos.x = Mouse.position.X;
         this._objects[1].data.pos.y = Mouse.position.Y;
+        this.setGravityToObjects();
         this.checkCollisionBetweenObjects();
         this._objects.forEach(object => object.update());
+
     }
 
 
@@ -86,10 +115,10 @@ class World {
                     if (this._objects[bObject] instanceof CircleShape) {
                         isColliding = SAT.testCircleCircle(this._objects[aObject].data, this._objects[bObject].data, response);
                     }
-                }else if(this._objects[aObject] instanceof PolygonShape){
+                } else if (this._objects[aObject] instanceof PolygonShape) {
                     if (this._objects[bObject] instanceof CircleShape) {
                         isColliding = SAT.testPolygonCircle(this._objects[aObject].data, this._objects[bObject].data, response);
-                    }else{
+                    } else {
                         isColliding = SAT.testPolygonPolygon(this._objects[aObject].data, this._objects[bObject].data, response);
                     }
                 }
@@ -99,6 +128,13 @@ class World {
                 }
             }
         }
+    }
+
+    setGravityToObjects() {
+        this._objects.forEach(object => {
+            object.acceleration += this._gravity;
+            object.data.pos.y += object.acceleration;
+        });
     }
 
 
