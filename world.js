@@ -60,6 +60,7 @@ class World {
         this._objects[1].data.pos.y = Mouse.position.Y;
         this.setGravityToObjects();
         this.checkCollisionBetweenObjects();
+        this.checkCollisionGroundAndWalls();
         this._objects.forEach(object => object.update());
 
     }
@@ -98,6 +99,18 @@ class World {
 
     addObject(object) {
         this._objects.push(object);
+    }
+
+    checkCollisionGroundAndWalls(){
+        this._objects.forEach(object =>{
+            if (object instanceof CircleShape){
+                if(object.data.pos.y > this._worldHeight - object.radius){
+                    object.acceleration = 0;
+                    object.data.pos.y = this._worldHeight - object.radius;
+                }
+            }
+
+        });
     }
 
     checkCollisionBetweenObjects() {
