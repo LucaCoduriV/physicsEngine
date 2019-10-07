@@ -108,6 +108,11 @@ class World {
                     object.acceleration = 0;
                     object.data.pos.y = this._worldHeight - object.radius;
                 }
+                if(object.data.pos.x > this._worldWidth - object.radius){
+                    object.data.pos.x = this._worldWidth - object.radius;
+                }if(object.data.pos.x < 0 + object.radius){
+                    object.data.pos.x = object.radius;
+                }
             }
 
         });
@@ -137,6 +142,7 @@ class World {
                 }
                 if (isColliding) {
                     //si une collision existe alors on répond en conséquence
+                    this._objects[aObject].acceleration = 0;
                     this._objects[aObject].respondTocollision(this._objects[bObject], response);
                 }
             }
